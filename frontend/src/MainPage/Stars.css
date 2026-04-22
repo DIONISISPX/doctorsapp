@@ -1,0 +1,50 @@
+.rating-container {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    margin-top: 10px;
+}
+
+.stars-wrapper {
+    display: flex;
+    align-items: center; /* Align items vertically */
+    gap: 10px; /* Add spacing between rating-info, stars-container, and button */
+}
+
+.rating-info {
+    font-size: 14px;
+    color: #666;
+    white-space: nowrap; /* Prevent text wrapping */
+}
+
+.stars-container {
+    display: flex;
+    gap: 5px;
+}
+
+.rate-button {
+    padding: 5px 10px;
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 14px;
+    width: fit-content;
+    margin-left: 10px; /* Add spacing between stars and button */
+}
+
+.rate-button:disabled {
+    background-color: #cccccc;
+    cursor: not-allowed;
+}
+
+.error-message {
+    color: #ff0000;
+    font-size: 14px;
+}
+
+.star {
+    cursor: pointer;
+    transition: color 0.2s ease-in-out; /* Smooth transition for hover effect */
+}

@@ -1,0 +1,98 @@
+.login-container {
+    display: flex;
+    flex-direction: column; /* Stack items vertically */
+    align-items: center; /* Center items horizontally */
+    justify-content: center; /* Center items vertically */
+    background-color: #ffffff;
+    position: relative; /* Make this container the reference for absolute positioning */
+    height: 100vh; /* Full viewport height */
+}
+
+.logo-container {
+    text-align: center;
+    margin-bottom: 5; /* Space between logo and header */
+}
+
+.login-logo {
+    width: 200px;
+    height: 120px;
+    margin: 0; /* Remove margin to avoid unnecessary spacing */
+}
+
+.login-header {
+    font-family: 'Arial', sans-serif;
+    font-size: 42px;
+    text-align: center;
+    color: hsla(218, 76%, 38%, 0.928);
+    
+}
+
+.login-form {
+    padding: 20px;
+    margin-bottom: 10%;
+    border: 1px solid hsl(0, 0%, 80%);
+    border-radius: 10px;
+    background-color: hsl(210, 23%, 95%);
+    box-shadow: 5px 5px 5px hsla(0, 0%, 0%, 0.2);
+    list-style: none;
+    position: relative; /* Ensure the form stays in the stacking context */
+}
+
+.login-container label {
+    font-family: 'Courier New', Courier, monospace;
+
+}
+
+.login-form li {
+    display: flex;
+    justify-content: center;
+    margin: 20px 0;
+}
+
+.login-form input {
+    border-radius: 2px;
+    border: 1px solid hsl(0, 0%, 50%);
+}
+
+.login-form input:focus {
+    border-color: hsl(205, 100%, 30%);
+    outline: none;
+}
+
+.login-button{
+    width: 175px;
+    font-size: 20px;
+    font-weight: bold;
+    border: 1px solid hsla(0, 0%, 80%, 0.80);
+    border-radius: 5px;
+    background-color: hsl(120, 96%, 40%);
+    color: white;
+    cursor: pointer;
+}
+
+.login-button:hover {
+    background-color: hsl(120, 96%, 30%);
+    transform: scale(1.02);
+    transition: background-color 0.3s, transform 0.3s; /* Smooth transition for hover effect */
+}
+
+.register-button {
+    font-size: 14px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    color: hsl(215, 100%, 50%);
+}
+
+.register-button:hover {
+    color: hsl(215, 100%, 30%);
+}
+
+.register-label{
+    font-family: 'Courier New', Courier, monospace;
+    font-size: 14px;
+}
+
+.login-form input::placeholder {
+    color: hsla(0, 0%, 50%, 0.6);
+}
