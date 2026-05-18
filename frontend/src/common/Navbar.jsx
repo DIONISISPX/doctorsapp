@@ -1,4 +1,4 @@
-import { NavLink, useLocation } from "react-router-dom";
+import { NavLink } from "react-router-dom";
 import { useState, useEffect, useRef } from "react";
 import './Navbar.css';
 import { FaUserCircle } from "react-icons/fa";
@@ -15,7 +15,6 @@ export default function Navbar({ isSidebarOpen, toggleSidebar }) {
     });
     const [dropdownOpen, setDropdownOpen] = useState(false);
     const dropdownRef = useRef();
-    const location = useLocation();
 
     const getLoginInfo = () => {
         const token = localStorage.getItem("token");

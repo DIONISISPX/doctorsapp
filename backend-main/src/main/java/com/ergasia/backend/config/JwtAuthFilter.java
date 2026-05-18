@@ -34,7 +34,7 @@ public class JwtAuthFilter extends OncePerRequestFilter {
                     );
                 } catch (RuntimeException e) {
                     SecurityContextHolder.clearContext();
-                    throw e;
+                    // Do not throw exception here, let the security configuration handle unauthorized access
                 }
             }
         }

@@ -3,7 +3,6 @@ import image from '../assets/medical-symbol-vector-414258.png';
 import { useNavigate } from 'react-router-dom';
 import { useState } from 'react';
 import PatientService from '../service/PatientService.js';
-import Login from './Login.jsx';
 
 export default function Register() {
 
@@ -27,16 +26,17 @@ export default function Register() {
     const handleSubmit = async (e) => {
         e.preventDefault();
         try{
-            const token = localStorage.getItem('token');
-            await PatientService.registerUser(formData, token);
-
-            setFormData({
-                firstName: '',
-                lastName: '',
-                login: '',
-                password: ''
-            });
-            navigate('/home');
+            const patientData = await PatientService.registerUser(formData);
+            if (patientData.token) {
+                localStorage.setItem('token', patientData.token);
+                setFormData({
+                    firstName: '',
+                    lastName: '',
+                    login: '',
+                    password: ''
+                });
+                navigate('/home');
+            }
         }catch(err){
             console.error(err);
             setError('User already exists!');
@@ -53,31 +53,32 @@ export default function Register() {
                 <div className="logo-container">
                     <img src={image} alt="medical" className="login-logo" />
                 </div>
+                {error && <p className="error-message" style={{color: 'red', textAlign: 'center'}}>{error}</p>}
                 <form onSubmit={handleSubmit}>
                     <ul className="login-form">
                         <h1 className="login-header">Welcome</h1>
                         <li>
                             <label>
                                 First Name <br />
-                                <input type="text" name='firstName' placeholder="Giorgos" value={formData.firstName} onChange={handleInputChange} />
+                                <input type="text" name='firstName' placeholder="Giorgos" value={formData.firstName} onChange={handleInputChange} required />
                             </label>
                         </li>
                         <li>
                             <label>
                                 Last Name <br />
-                                <input type="text" name='lastName' placeholder="Papadopoulos" value={formData.lastName} onChange={handleInputChange} />
+                                <input type="text" name='lastName' placeholder="Papadopoulos" value={formData.lastName} onChange={handleInputChange} required />
                             </label>
                         </li>
                         <li>
                             <label>
                                 AMKA <br />
-                                <input type="text" name='login' placeholder="12345678910" value={formData.amka} onChange={handleInputChange} />
+                                <input type="text" name='login' placeholder="12345678910" value={formData.login} onChange={handleInputChange} required />
                             </label>
                         </li>
                         <li>
                             <label>
                                 Password <br />
-                                <input type="password" name='password' placeholder="••••••••••" value={formData.password} onChange={handleInputChange} />
+                                <input type="password" name='password' placeholder="••••••••••" value={formData.password} onChange={handleInputChange} required />
                             </label>
                         </li>
                         <li>

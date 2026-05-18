@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { useCalendarApp, ScheduleXCalendar } from '@schedule-x/react';
 import {
     createViewWeek,
@@ -42,23 +42,16 @@ export default function Appointments() {
         }
     });
 
-    useEffect(() => {
-        if (calendarApp) {
-            calendarApp.events.set(events);
-        }
-    }, [events, calendarApp]);
+    const padZero = (num) => num.toString().padStart(2, '0');
 
-    useEffect(() => {
-        const newToken = localStorage.getItem('token');
-        if (newToken !== currentToken) {
-            localStorage.removeItem('cachedEvents');
-            setCurrentToken(newToken);
-            setEvents([]);
-            fetchAppointments(newToken);
-        }
-    }, [currentToken]);
+    const formatDateTimeForCalendar = useCallback((date) => {
+        const adjustedDate = new Date(date);
+        adjustedDate.setHours(adjustedDate.getHours() + 3);
+        
+        return `${adjustedDate.getFullYear()}-${padZero(adjustedDate.getMonth() + 1)}-${padZero(adjustedDate.getDate())} ${padZero(adjustedDate.getHours())}:${padZero(adjustedDate.getMinutes())}`;
+    }, []);
 
-    const fetchAppointments = async (token) => {
+    const fetchAppointments = useCallback(async (token) => {
         if (!token) {
             setError("No authentication token found");
             setIsLoading(false);
@@ -72,13 +65,6 @@ export default function Appointments() {
             // Process appointments and mark past ones as completed
             const processedAppointments = await Promise.all(
                 userAppointments.map(async (appointment) => {
-                    const startDate = new Date(
-                        appointment.startTime[0],
-                        appointment.startTime[1] - 1,
-                        appointment.startTime[2],
-                        appointment.startTime[3],
-                        appointment.startTime[4]
-                    );
                     const endDate = new Date(
                         appointment.endTime[0],
                         appointment.endTime[1] - 1,
@@ -144,21 +130,28 @@ export default function Appointments() {
         } finally {
             setIsLoading(false);
         }
-    };
+    }, [formatDateTimeForCalendar]);
+
+    useEffect(() => {
+        if (calendarApp) {
+            calendarApp.events.set(events);
+        }
+    }, [events, calendarApp]);
+
+    useEffect(() => {
+        const newToken = localStorage.getItem('token');
+        if (newToken !== currentToken) {
+            localStorage.removeItem('cachedEvents');
+            setCurrentToken(newToken);
+            setEvents([]);
+            fetchAppointments(newToken);
+        }
+    }, [currentToken, fetchAppointments]);
 
     useEffect(() => {
         const token = localStorage.getItem('token');
         fetchAppointments(token);
-    }, []);
-
-    const formatDateTimeForCalendar = (date) => {
-        const adjustedDate = new Date(date);
-        adjustedDate.setHours(adjustedDate.getHours() + 3);
-        
-        return `${adjustedDate.getFullYear()}-${padZero(adjustedDate.getMonth() + 1)}-${padZero(adjustedDate.getDate())} ${padZero(adjustedDate.getHours())}:${padZero(adjustedDate.getMinutes())}`;
-    };
-
-    const padZero = (num) => num.toString().padStart(2, '0');
+    }, [fetchAppointments]);
 
     const sortAppointmentsByDate = (appointments) => {
         return [...appointments].sort((a, b) => {
